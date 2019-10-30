@@ -1,0 +1,37 @@
+version: '2'
+networks:
+  bymn:
+services:
+
+
+
+  peer1-org1:
+    container_name: peer1.org1.example.com
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_PEER_ID=peer1.org1.example.com
+      - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_LOCALMSPID=org1MSP
+      - CORE_PEER_CHAINCODEADDRESS=peer1.org1.example.com:7057
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7057
+      - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer1/assets/msp
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=guide_fabric-ca
+      - FABRIC_LOGGING_SPEC=debug
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org1/peer1/assets/tls-msp/signcerts/cert.pem
+      - CORE_PEER_TLS_KEY_FILE=/tmp/hyperledger/org1/peer1/assets/tls-msp/keystore/key.pem
+      - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org1/peer1/assets/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.example.com:7051
+      - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1/peer1
+    volumes:
+      - /var/run:/host/var/run
+      - /home/simran/go/src/github.com/hyperledger/fabric-ca/tmp2/hyperledger/org1:/tmp/hyperledger/org1/
+    ports:
+      - 7051:7051
+    networks:
+      - bymn

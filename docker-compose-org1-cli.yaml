@@ -1,0 +1,32 @@
+version: '2'
+networks:
+  bymn:
+services:
+      cli-org1:
+        container_name: cli-org1
+        image: hyperledger/fabric-tools
+       
+        tty: true
+        stdin_open: true
+        environment:
+          - GOPATH=/opt/gopath
+          - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+          - FABRIC_LOGGING_SPEC=DEBUG
+          - CORE_PEER_ID=cli-org1
+          - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
+          - CORE_PEER_LOCALMSPID=org1MSP
+          - CORE_PEER_TLS_ENABLED=true
+          - CORE_PEER_TLS_ROOTCERT_FILE=/tmp/hyperledger/org1/peer1/assests/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+          - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer1/msp
+        working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1
+        command: sh
+        volumes:
+          - /var/run:/host/var/run
+          - /home/simran/go/src/github.com/hyperledger/fabric-ca/tmp2/hyperledger/org1:/tmp/hyperledger/org1/peer1
+          - /home/simran/go/src/github.com/hyperledger/fabric-ca/tmp2/hyperledger/org1/peer1/assets/chaincode:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
+          - /home/simran/go/src/github.com/hyperledger/fabric-ca/tmp2/hyperledger/org1/ca/:/tmp/hyperledger/org1/admin
+          - /home/simran/go/src/github.com/hyperledger/fabric-ca/tmp2/hyperledger/org0:/tmp/hyperledger/org0
+        ports:
+          - 8080:8080
+        networks:
+          - bymn

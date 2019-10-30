@@ -1,0 +1,21 @@
+version: '2'
+networks:
+  bymn:
+services:
+
+  ca-tls1:
+    container_name: ca-tls1
+    image: hyperledger/fabric-ca:1.4.2
+    command: sh -c 'fabric-ca-server start -d -b ca-tls1-admin:ca-tls1-adminpw --port 7052'
+    environment:
+        - FABRIC_CA_SERVER_HOME=/tmp/hyperledger/fabric-ca/crypto
+        - FABRIC_CA_SERVER_TLS_ENABLED=true
+        - FABRIC_CA_SERVER_CSR_CN=ca-tls1
+        - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+        - FABRIC_CA_SERVER_DEBUG=true
+    volumes:
+        - /home/simran/go/src/github.com/hyperledger/fabric-ca/tmp2/hyperledger/tls/ca:/tmp/hyperledger/fabric-ca
+    ports:
+        - 7052:7052
+    networks:
+        - bymn   

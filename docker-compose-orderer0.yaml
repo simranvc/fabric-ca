@@ -1,0 +1,27 @@
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'
+networks:
+  bymn:
+services:
+
+   orderer0-ca:
+      container_name: orderer0-ca
+      image: hyperledger/fabric-ca
+      command: /bin/bash -c 'fabric-ca-server start -d -b orderer0-ca-admin:orderer0-ca-adminpw --port 7053'
+      environment:
+         - FABRIC_CA_SERVER_HOME=/tmp/hyperledger/fabric-ca/crypto
+         - FABRIC_CA_SERVER_TLS_ENABLED=true
+         - FABRIC_CA_SERVER_CSR_CN=orderer0-ca
+         - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
+         - FABRIC_CA_SERVER_DEBUG=true
+      volumes:
+         - /home/simran/go/src/github.com/hyperledger/fabric-ca/tmp2/hyperledger/org0/ca:/tmp/hyperledger/fabric-ca
+
+      ports:
+         - 7053:7053
+      networks:
+         - bymn   
